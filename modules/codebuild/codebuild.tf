@@ -44,6 +44,6 @@ resource "aws_codebuild_project" "codebuild_project_test" {
 }
 
 # Output TF Plan CodeBuild name to main.tf
-output "codebuild_test_name" {
+output "codebuild_project_test_name" {
   value = var.codebuild_project_test_name
 }

@@ -27,3 +27,14 @@ module "codebuild" {
   codebuild_iam_role_arn                 = module.bootstrap.codebuild_iam_role_arn
   s3_logging_bucket                      = module.bootstrap.s3_logging_bucket
 }
+
+## Build a CodePipeline
+module "codepipeline" {
+  source                                 = "./modules/codepipeline"
+  codepipeline_name                      = "CodePipeline"
+  codepipeline_artifact_bucket_name      = "paulo-codebuild-demo-artifact-bucket-name"
+  codepipeline_role_name                 = "CodePipelineIamRole"
+  codepipeline_role_policy_name          = "CodePipelineIamRolePolicy"
+  terraform_codecommit_repo_name         = module.codecommit.terraform_codecommit_repo_name
+  codebuild_project_test_name            = module.codebuild.codebuild_project_test_name
+}

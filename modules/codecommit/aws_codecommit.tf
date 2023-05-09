@@ -2,6 +2,7 @@
 resource "aws_codecommit_repository" "repo" {
   repository_name = var.repository_name
   description     = "CodeCommit Terraform repo for demo"
+  default_branch  = "main"
 }
 
 # Output the repo info back to main.tf
