@@ -34,8 +34,7 @@ resource "aws_codebuild_project" "codebuild_project_test" {
   }
 
   source {
-    type      = "CODEPIPELINE"
-    buildspec = "buildspec_terraform_plan.yml"
+    type = "CODEPIPELINE"
   }
 
   tags = {

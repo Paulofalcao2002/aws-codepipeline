@@ -219,22 +219,22 @@ resource "aws_codepipeline" "codepipeline" {
     }
   }
 
-  # stage {
-  #   name = "Build"
+  stage {
+    name = "Build"
 
-  #   action {
-  #     name             = "Build"
-  #     category         = "Build"
-  #     owner            = "AWS"
-  #     provider         = "CodeBuild"
-  #     input_artifacts  = ["SourceArtifact"]
-  #     version          = "1"
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["SourceArtifact"]
+      version          = "1"
 
-  #     configuration = {
-  #       ProjectName = var.codebuild_project_test_name
-  #     }
-  #   }
-  # }
+      configuration = {
+        ProjectName = var.codebuild_project_test_name
+      }
+    }
+  }
 
   stage {
     name = "Manual_Approval"

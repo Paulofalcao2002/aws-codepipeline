@@ -50,7 +50,6 @@ output "codebuild_iam_role_arn" {
 }
 
 # Create an IAM role policy for CodeBuild to use implicitly
-# TODO: Add new policies when codeBuld module is added
 resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
   name = var.codebuild_iam_role_policy_name
   role = aws_iam_role.codebuild_iam_role.name
@@ -79,6 +78,8 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
       "Resource": [
         "${aws_s3_bucket.s3_logging_bucket.arn}",
         "${aws_s3_bucket.s3_logging_bucket.arn}/*",
+        "${var.codepipeline_artifact_bucket_arn}",
+        "${var.codepipeline_artifact_bucket_arn}/*",
         "arn:aws:s3:::codepipeline-us-east-1*",
         "arn:aws:s3:::codepipeline-us-east-1*/*"
       ]
