@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  LambdaExample:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      CodeUri: ./LambdaCode
+      Handler: lambda_function.lambda_handler
+      Description: Description
+      MemorySize: 512
+      Timeout: 30
+      Role: arn:aws:iam::XXXXX:role/CodePipelineIamRole # Change this to use your aws account id
