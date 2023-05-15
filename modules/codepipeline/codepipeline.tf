@@ -24,19 +24,29 @@ output "codepipeline_artifact_bucket_arn" {
 
 resource "aws_iam_role" "codepipeline_role" {
   name = var.codepipeline_role_name
+  assume_role_policy = data.aws_iam_policy_document.cp_assume_role_policy.json
+}
 
-  assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-            "Service": "codepipeline.amazonaws.com"
-        },
-        "Action": "sts:AssumeRole"
-      }
-    ]
-  })
+data "aws_caller_identity" "default" {}
+
+data "aws_iam_policy_document" "cp_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["codepipeline.amazonaws.com", "codebuild.amazonaws.com", "cloudformation.amazonaws.com", "lambda.amazonaws.com"]
+    }
+  }
+
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.default.account_id}:root"]
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
@@ -46,23 +56,6 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
   policy = <<EOF
 {
   "Statement": [
-    {
-      "Action": [
-        "iam:PassRole"
-      ],
-      "Resource": "*",
-      "Effect": "Allow",
-      "Condition": {
-        "StringEqualsIfExists": {
-          "iam:PassedToService": [
-            "cloudformation.amazonaws.com",
-            "elasticbeanstalk.amazonaws.com",
-            "ec2.amazonaws.com",
-            "ecs-tasks.amazonaws.com"
-          ]
-        }
-      }
-    },
     {
       "Action": [
         "codecommit:CancelUploadArchive",
@@ -98,15 +91,15 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         "cloudformation:*",
         "rds:*",
         "sqs:*",
-        "ecs:*"
+        "ecs:*",
+        "iam:PassRole"
       ],
       "Resource": "*",
       "Effect": "Allow"
     },
     {
       "Action": [
-        "lambda:InvokeFunction",
-        "lambda:ListFunctions"
+        "lambda:*"
       ],
       "Resource": "*",
       "Effect": "Allow"
@@ -136,7 +129,8 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         "cloudformation:DescribeChangeSet",
         "cloudformation:ExecuteChangeSet",
         "cloudformation:SetStackPolicy",
-        "cloudformation:ValidateTemplate"
+        "cloudformation:ValidateTemplate",
+        "iam:PassRole"
       ],
       "Resource": "*",
       "Effect": "Allow"
@@ -228,6 +222,7 @@ resource "aws_codepipeline" "codepipeline" {
       owner            = "AWS"
       provider         = "CodeBuild"
       input_artifacts  = ["SourceArtifact"]
+      output_artifacts = ["build_output"]
       version          = "1"
 
       configuration = {
@@ -247,21 +242,42 @@ resource "aws_codepipeline" "codepipeline" {
       version  = "1"
     }
   }
+  stage {
+    name = "Deploy"
 
-  # stage {
-  #   name = "Terraform_Apply"
+    action {
+      name            = "CreateChangeSet"
+      version         = "1"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "CloudFormation"
+      role_arn        = aws_iam_role.codepipeline_role.arn
+      input_artifacts = ["build_output"]
+      run_order       = 1
 
-  #   action {
-  #     name            = "Terraform-Apply"
-  #     category        = "Build"
-  #     owner           = "AWS"
-  #     provider        = "CodeBuild"
-  #     input_artifacts = ["SourceArtifact"]
-  #     version         = "1"
+      configuration = {
+        ActionMode    = "CHANGE_SET_REPLACE"
+        StackName     = "Sam-Stack"
+        ChangeSetName = "Sam-Stack-Changes"
+        RoleArn       = aws_iam_role.codepipeline_role.arn
+        TemplatePath  = "build_output::outputtemplate.yml"
+      }
+    }
 
-  #     configuration = {
-  #       ProjectName = var.codebuild_terraform_apply_name
-  #     }
-  #   }
-  # }
+    action {
+      name             = "DeployChangeSet"
+      version          = "1"
+      category         = "Deploy"
+      owner            = "AWS"
+      provider         = "CloudFormation"
+      output_artifacts = ["cf_artifacts"]
+      run_order        = 2
+
+      configuration = {
+        ActionMode    = "CHANGE_SET_EXECUTE"
+        StackName     = "Sam-Stack"
+        ChangeSetName = "Sam-Stack-Changes"
+      }
+    }
+  }
 }

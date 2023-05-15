@@ -73,7 +73,11 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "s3:*"
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation"
       ],
       "Resource": [
         "${aws_s3_bucket.s3_logging_bucket.arn}",
@@ -96,6 +100,38 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
         "codecommit:GitPull"
       ],
       "Resource": "${var.terraform_codecommit_repo_arn}"
+    },
+    {
+      "Action": [
+          "lambda:GetAlias",
+          "lambda:ListVersionsByFunction"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+          "*"
+      ]
+    },
+    {
+      "Action": [
+          "cloudformation:GetTemplate"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+          "*"
+      ]
+    },
+    {
+      "Action": [
+          "codebuild:CreateReportGroup",
+          "codebuild:CreateReport",
+          "codebuild:UpdateReport",
+          "codebuild:BatchPutTestCases",
+          "codebuild:BatchPutCodeCoverages"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+          "*"
+      ]
     },
     {
       "Effect": "Allow",
@@ -123,7 +159,10 @@ resource "aws_codebuild_project" "codebuild_project_test" {
   service_role  = aws_iam_role.codebuild_iam_role.arn
 
   artifacts {
-    type = "CODEPIPELINE"
+    name                   = var.codebuild_project_test_name
+    override_artifact_name = false
+    packaging              = "NONE"
+    type                   = "CODEPIPELINE"
   }
 
   cache {
@@ -133,9 +172,9 @@ resource "aws_codebuild_project" "codebuild_project_test" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:2.0"
-    type                        = "LINUX_CONTAINER"
+    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
     image_pull_credentials_type = "CODEBUILD"
+    type                        = "LINUX_CONTAINER"
   }
 
   logs_config {
