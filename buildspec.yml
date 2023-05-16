@@ -5,9 +5,8 @@ env:
 phases:
     install:
         runtime-versions:
-            nodejs: 16
+            python: 3.9
         commands:
-            - npm install -g typescript
             - pip install --upgrade pip
     build:
         commands:

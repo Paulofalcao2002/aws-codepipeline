@@ -105,6 +105,13 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
       "Effect": "Allow"
     },
     {
+      "Effect": "Allow",
+      "Action": [
+          "apigateway:*"
+      ],
+      "Resource": "arn:aws:apigateway:*::/*"
+    },
+    {
       "Action": [
         "opsworks:CreateDeployment",
         "opsworks:DescribeApps",

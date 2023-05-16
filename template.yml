@@ -1,14 +1,58 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Description: Simple Star Wars REST API deployed from CodePipeline using Cloudformation
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
-  LambdaExample:
+  RetrieveCharactersLambda:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: retrieve-star-wars-characters
       Runtime: python3.9
       CodeUri: ./LambdaCode
-      Handler: lambda_function.lambda_handler
+      Handler: lambda_function.retrieve_handler
       Description: Description
       MemorySize: 512
       Timeout: 30
       Role: arn:aws:iam::XXXXX:role/CodePipelineIamRole # Change this to use your aws account id
+
+  RestAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: Simple Star Wars API
+      Name: simple-star-wars-api
+
+  RestAPIDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: RetrieveCharactersMethod
+    Properties:
+      RestApiId: !Ref RestAPI
+      StageName: v1
+
+  CharactersResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt RestAPI.RootResourceId
+      PathPart: characters
+      RestApiId: !Ref RestAPI
+
+  RetrieveCharactersMethod:
+    Type: AWS::ApiGateway::Method
+    DependsOn:
+      - RetrieveCharactersLambda
+      - CharactersResource
+    Properties:
+      AuthorizationType: AWS_IAM
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:retrieve-star-wars-characters/invocations
+      ResourceId: !Ref CharactersResource
+      RestApiId: !Ref RestAPI
+
+  ApiGatewayInvokePermissionForRetrieveCharacters:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt RetrieveCharactersLambda.Arn
+      Principal: apigateway.amazonaws.com
