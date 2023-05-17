@@ -3,21 +3,21 @@ variable "codepipeline_artifact_bucket_name" {
 }
 
 variable "codepipeline_role_name" {
-  description = "Name of the Terraform CodePipeline IAM Role"
+  description = "Name of the Star Wars API CodePipeline IAM Role"
 }
 
 variable "codepipeline_role_policy_name" {
-  description = "Name of the Terraform IAM Role Policy"
+  description = "Name of the Star Wars API IAM Role Policy"
 }
 
 variable "codepipeline_name" {
-  description = "Terraform CodePipeline Name"
+  description = "Star Wars API CodePipeline Name"
 }
 
 variable "terraform_codecommit_repo_name" {
-  description = "Terraform CodeCommit repo name"
+  description = "Star Wars API CodeCommit repo name"
 }
 
 variable "codebuild_project_test_name" {
-  description = "Terraform plan codebuild project name"
+  description = "Star Wars API plan codebuild project name"
 }

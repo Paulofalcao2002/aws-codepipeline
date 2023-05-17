@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "s3_logging_bucket" {
   bucket = var.s3_logging_bucket_name
 }
 
-# These rules are imporntant to in a CodePipeline to ensure the bucket is owned by the correct AWS account
+# These rules are important in a CodePipeline to ensure the bucket is owned by the correct AWS account
 resource "aws_s3_bucket_ownership_controls" "s3_logging_bucket" {
   bucket = aws_s3_bucket.s3_logging_bucket.id
   rule {
@@ -22,6 +22,7 @@ resource "aws_s3_bucket_acl" "s3_logging_bucket" {
 output "s3_logging_bucket_id" {
   value = aws_s3_bucket.s3_logging_bucket.id
 }
+
 output "s3_logging_bucket" {
   value = aws_s3_bucket.s3_logging_bucket.bucket
 }
@@ -151,15 +152,15 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
 POLICY
 }
 
-# Create a test CodeBuild Project
-resource "aws_codebuild_project" "codebuild_project_test" {
-  name          = var.codebuild_project_test_name
-  description   = "Terraform codebuild project"
+# Create a CodeBuild Project for the API
+resource "aws_codebuild_project" "codebuild_project" {
+  name          = var.codebuild_project_name
+  description   = "Star Wars API Codebuild project"
   build_timeout = "5"
   service_role  = aws_iam_role.codebuild_iam_role.arn
 
   artifacts {
-    name                   = var.codebuild_project_test_name
+    name                   = var.codebuild_project_name
     override_artifact_name = false
     packaging              = "NONE"
     type                   = "CODEPIPELINE"
@@ -185,7 +186,7 @@ resource "aws_codebuild_project" "codebuild_project_test" {
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.s3_logging_bucket.id}/${var.codebuild_project_test_name}/build-log"
+      location = "${aws_s3_bucket.s3_logging_bucket.id}/${var.codebuild_project_name}/build-log"
     }
   }
 
@@ -198,7 +199,7 @@ resource "aws_codebuild_project" "codebuild_project_test" {
   }
 }
 
-# Output TF Plan CodeBuild name to main.tf
-output "codebuild_project_test_name" {
-  value = var.codebuild_project_test_name
+# Output CodeBuild name to main.tf
+output "codebuild_project_name" {
+  value = var.codebuild_project_name
 }

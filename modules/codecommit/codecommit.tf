@@ -1,7 +1,7 @@
-# Build AWS CodeCommit git repo
+# Build CodeCommit git repo for our Star Wars API
 resource "aws_codecommit_repository" "repo" {
   repository_name = var.repository_name
-  description     = "CodeCommit Terraform repo for demo"
+  description     = "CodeCommit repo for my Star Wars API"
   default_branch  = "main"
 }
 

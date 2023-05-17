@@ -1,4 +1,4 @@
-variable "codebuild_project_test_name" {
+variable "codebuild_project_name" {
   description = "Name for test CodeBuild Project"
 }
 
