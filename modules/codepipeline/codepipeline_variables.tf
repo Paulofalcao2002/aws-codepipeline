@@ -14,7 +14,7 @@ variable "codepipeline_name" {
   description = "Star Wars API CodePipeline Name"
 }
 
-variable "terraform_codecommit_repo_name" {
+variable "codecommit_repo_name" {
   description = "Star Wars API CodeCommit repo name"
 }
 

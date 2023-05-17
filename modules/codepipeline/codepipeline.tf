@@ -225,7 +225,7 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = var.terraform_codecommit_repo_name
+        RepositoryName = var.codecommit_repo_name
         BranchName     = "main"
       }
     }

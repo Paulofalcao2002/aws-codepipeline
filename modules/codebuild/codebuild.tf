@@ -100,7 +100,7 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
         "codecommit:List*",
         "codecommit:GitPull"
       ],
-      "Resource": "${var.terraform_codecommit_repo_arn}"
+      "Resource": "${var.codecommit_repo_arn}"
     },
     {
       "Action": [

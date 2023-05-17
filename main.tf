@@ -18,7 +18,7 @@ module "codebuild" {
   s3_logging_bucket_name                 = "paulo-codebuild-star-wars-api-logging-bucket"
   codebuild_iam_role_name                = "CodeBuildIamRole"
   codebuild_iam_role_policy_name         = "CodeBuildIamRolePolicy"
-  terraform_codecommit_repo_arn          = module.codecommit.terraform_codecommit_repo_arn
+  codecommit_repo_arn                    = module.codecommit.codecommit_repo_arn
   codepipeline_artifact_bucket_name      = module.codepipeline.codepipeline_artifact_bucket_name
   codepipeline_artifact_bucket_arn       = module.codepipeline.codepipeline_artifact_bucket_arn
 }
@@ -27,9 +27,9 @@ module "codebuild" {
 module "codepipeline" {
   source                                 = "./modules/codepipeline"
   codepipeline_name                      = "StarWarsAPICodePipeline"
-  codepipeline_artifact_bucket_name      = "paulo-codebuild-demo-artifact-bucket-name"
+  codepipeline_artifact_bucket_name      = "paulo-codepipeline-star-wars-api-artifact-bucket-name"
   codepipeline_role_name                 = "CodePipelineIamRole"
   codepipeline_role_policy_name          = "CodePipelineIamRolePolicy"
-  terraform_codecommit_repo_name         = module.codecommit.terraform_codecommit_repo_name
+  codecommit_repo_name                   = module.codecommit.codecommit_repo_name
   codebuild_project_test_name            = module.codebuild.codebuild_project_name
 }
