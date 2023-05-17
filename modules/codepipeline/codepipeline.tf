@@ -79,7 +79,7 @@ resource "aws_codepipeline" "codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = var.codebuild_project_test_name
+        ProjectName = var.codebuild_project_name
       }
     }
   }

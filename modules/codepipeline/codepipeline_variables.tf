@@ -9,7 +9,7 @@ variable "codecommit_repo_name" {
   description = "Star Wars API CodeCommit repo name"
 }
 
-variable "codebuild_project_test_name" {
+variable "codebuild_project_name" {
   description = "Star Wars API plan codebuild project name"
 }
 

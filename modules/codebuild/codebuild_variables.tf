@@ -1,5 +1,5 @@
 variable "codebuild_project_name" {
-  description = "Name for test CodeBuild Project"
+  description = "Name for Star Wars API CodeBuild Project"
 }
 
 variable "s3_logging_bucket_name" {
