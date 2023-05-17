@@ -16,3 +16,7 @@ variable "codebuild_project_test_name" {
 variable "codepipeline_role_arn" {
   description = "CodePipeline role ARN"
 }
+
+variable "current_account_id" {
+  description = "Current AWS account id"
+}

@@ -2,6 +2,10 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Simple Star Wars REST API deployed from CodePipeline using Cloudformation
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  AccountId:
+    Type: String
+
 Resources:
   RetrieveCharactersLambda:
     Type: AWS::Serverless::Function
@@ -13,7 +17,11 @@ Resources:
       Description: Description
       MemorySize: 512
       Timeout: 30
-      Role: arn:aws:iam::XXXXX:role/CodePipelineIamRole # Change this to use your aws account id
+      Role: !Join
+        - ''
+        - - 'arn:aws:iam::'
+          - !Ref AccountId
+          - ':role/CodePipelineIamRole'
 
   RestAPI:
     Type: AWS::ApiGateway::RestApi

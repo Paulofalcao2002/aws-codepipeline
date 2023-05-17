@@ -1,6 +1,11 @@
 # Retrieve current user account id
 data "aws_caller_identity" "current" {}
 
+# Outputs this the account id back to main.tf
+output "current_account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
+
 # Create an IAM role for CodeBuild to assume
 resource "aws_iam_role" "codebuild_iam_role" {
   name = var.codebuild_iam_role_name

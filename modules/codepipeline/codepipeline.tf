@@ -1,3 +1,10 @@
+# Local variable used to specify the parameters of cloudformation template 
+locals {
+  parameter_overrides = jsonencode({
+    AccountId = var.current_account_id
+  })
+}
+
 # Build an AWS S3 bucket for CodePipeline to use as artifact storage
 resource "aws_s3_bucket" "codepipeline_artifact_bucket" {
   bucket = var.codepipeline_artifact_bucket_name
@@ -39,7 +46,7 @@ resource "aws_codepipeline" "codepipeline" {
     type     = "S3"
   }
 
-  # Retrieves the aplication code from the CodeCommit Repo
+  # Retrieves the application code from the CodeCommit Repo
   stage {
     name = "Source"
 
@@ -112,6 +119,7 @@ resource "aws_codepipeline" "codepipeline" {
         ChangeSetName = "Star-Wars-API-Stack-Changes"
         RoleArn       = var.codepipeline_role_arn
         TemplatePath  = "build_output::outputtemplate.yml"
+        ParameterOverrides = local.parameter_overrides
       }
     }
 

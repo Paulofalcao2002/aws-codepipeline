@@ -41,4 +41,5 @@ module "codepipeline" {
   codecommit_repo_name                   = module.codecommit.codecommit_repo_name
   codebuild_project_test_name            = module.codebuild.codebuild_project_name
   codepipeline_role_arn                  = module.iam.codepipeline_iam_role_arn
+  current_account_id                     = module.iam.current_account_id
 }
