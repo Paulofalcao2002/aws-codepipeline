@@ -19,6 +19,7 @@ module "codebuild" {
   codebuild_iam_role_name                = "CodeBuildIamRole"
   codebuild_iam_role_policy_name         = "CodeBuildIamRolePolicy"
   terraform_codecommit_repo_arn          = module.codecommit.terraform_codecommit_repo_arn
+  codepipeline_artifact_bucket_name      = module.codepipeline.codepipeline_artifact_bucket_name
   codepipeline_artifact_bucket_arn       = module.codepipeline.codepipeline_artifact_bucket_arn
 }
 

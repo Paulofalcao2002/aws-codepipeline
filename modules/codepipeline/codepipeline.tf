@@ -19,6 +19,10 @@ resource "aws_s3_bucket_acl" "codepipeline_artifact_bucket" {
 }
 
 # Output the pipeline artifact bucket back to main.tf
+output "codepipeline_artifact_bucket_name" {
+  value = var.codepipeline_artifact_bucket_name
+}
+
 output "codepipeline_artifact_bucket_arn" {
   value = aws_s3_bucket.codepipeline_artifact_bucket.arn
 }

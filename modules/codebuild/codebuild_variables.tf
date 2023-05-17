@@ -18,6 +18,10 @@ variable "terraform_codecommit_repo_arn" {
   description = "Terraform CodeCommit git repo ARN"
 }
 
+variable "codepipeline_artifact_bucket_name" {
+  description = "CodePiepline artifact bucket name"
+}
+
 variable "codepipeline_artifact_bucket_arn" {
   description = "CodePiepline artifact bucket ARN"
 }

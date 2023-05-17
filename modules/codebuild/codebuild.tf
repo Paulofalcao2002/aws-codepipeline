@@ -176,6 +176,11 @@ resource "aws_codebuild_project" "codebuild_project" {
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
     image_pull_credentials_type = "CODEBUILD"
     type                        = "LINUX_CONTAINER"
+
+    environment_variable {
+      name  = "ARTIFACT_BUCKET_NAME"
+      value = var.codepipeline_artifact_bucket_name
+    }
   }
 
   logs_config {
