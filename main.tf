@@ -11,13 +11,23 @@ module "codecommit" {
     repository_name = "StarWarsAPIRepo"
 }
 
+module "iam" {
+  source                                 = "./modules/iam"
+  codebuild_iam_role_name                = "CodeBuildIamRole"
+  codebuild_iam_role_policy_name         = "CodeBuildIamRolePolicy"
+  s3_logging_bucket_arn                  = module.codebuild.s3_logging_bucket_arn
+  codepipeline_artifact_bucket_arn       = module.codepipeline.codepipeline_artifact_bucket_arn
+  codecommit_repo_arn                    = module.codecommit.codecommit_repo_arn
+  codepipeline_role_name                 = "CodePipelineIamRole"
+  codepipeline_role_policy_name          = "CodePipelineIamRolePolicy"
+}
+
 # Build a CodeBuild project for building our CloudFormation template
 module "codebuild" {
   source                                 = "./modules/codebuild"
   codebuild_project_name                 = "StarWarsAPICodeBuildProject"
   s3_logging_bucket_name                 = "paulo-codebuild-star-wars-api-logging-bucket"
-  codebuild_iam_role_name                = "CodeBuildIamRole"
-  codebuild_iam_role_policy_name         = "CodeBuildIamRolePolicy"
+  codebuild_iam_role_arn                 = module.iam.codebuild_iam_role_arn  
   codecommit_repo_arn                    = module.codecommit.codecommit_repo_arn
   codepipeline_artifact_bucket_name      = module.codepipeline.codepipeline_artifact_bucket_name
   codepipeline_artifact_bucket_arn       = module.codepipeline.codepipeline_artifact_bucket_arn
@@ -28,8 +38,7 @@ module "codepipeline" {
   source                                 = "./modules/codepipeline"
   codepipeline_name                      = "StarWarsAPICodePipeline"
   codepipeline_artifact_bucket_name      = "paulo-codepipeline-star-wars-api-artifact-bucket-name"
-  codepipeline_role_name                 = "CodePipelineIamRole"
-  codepipeline_role_policy_name          = "CodePipelineIamRolePolicy"
   codecommit_repo_name                   = module.codecommit.codecommit_repo_name
   codebuild_project_test_name            = module.codebuild.codebuild_project_name
+  codepipeline_role_arn                  = module.iam.codepipeline_iam_role_arn
 }
