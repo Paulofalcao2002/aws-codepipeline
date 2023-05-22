@@ -3,11 +3,6 @@ env:
     shell: bash
 
 phases:
-    install:
-        runtime-versions:
-            python: 3.9
-        commands:
-            - pip install --upgrade pip
     build:
         commands:
             - echo deploy started on `date`
