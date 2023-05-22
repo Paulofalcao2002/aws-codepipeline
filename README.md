@@ -468,6 +468,7 @@ module "codepipeline" {
 }
 ```
 
+****
 ## Utilizando a pipeline
 ### Pré requisito
 Para realizar o teste será necessário criar um usuário na AWS com permissões de fazer uso de repositórios CodeCommit e gerar credenciais para fazer a conexão. O [tutorial](https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html) da AWS é bem completo.
@@ -544,6 +545,7 @@ Insira o valor dessas variáveis respectivas ao seu usuário AWS e selecione o e
 
 ![](img/Postman200.jpg)
 
+****
 ## Apagando a infraestrutura
 Por utilizar o CloudFormation, antes de utilizar o `terraform destroy` **É NECESSÁRIO APAGAR O CLOUDFORMATION STACK NO CONSOLE AWS!!!** Se o `terraform destroy` for realizado antes, a role que criou a stack do CLoudFormation será apagada e por isso não será possível apagar o stack. Além disso, antes de realizar o `terraform destroy` é necessário esvaziar os S3 buckets que foram criados pelo projeto. 
 
