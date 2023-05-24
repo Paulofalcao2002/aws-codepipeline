@@ -476,6 +476,8 @@ Para realizar o teste será necessário criar um usuário na AWS com permissões
 ### Subindo a infraestrutura
 Todo o trabalho de criar uma **IaC** será recompensado agora, já que com os arquivos **terraform** é necessário simplesmente rodar `terraform init` e `terraform apply` e a *pipeline* estará no ar!
 
+**OBS:** Como cada s3 bucket deve ter um nome único, isso pode ser um problema caso os nomes dos buckets já estejam sendo utilizados. Caso isso ocorra, basta mudar o nome no `main.tf`.
+
 ![](img/PipelineCreated.jpg)
 
 Ao entrar na *pipeline* antes de subir o código, algo estranho acontece:
@@ -490,7 +492,16 @@ Entre na aba de CodeCommit e clone o repositório criado na sua máquina:
 
 ![](img/CodeCommitClone.jpg)
 
-Dentro do repositório clonado, copie e cole o conteúdo do diretório `StarWarsAPI`. Nele está contido os arquivos **buildspec.yml**, **template.yml** e o código python com uma versão simples de uma API. Realize um novo commit com os arquivos e de *push*. Depois de alguns segundos sua pipeline deve estar rodando:
+Dentro do repositório clonado, copie e cole o conteúdo do diretório `StarWarsAPI`. Nele está contido os arquivos **buildspec.yml**, **template.yml** e o código python com uma versão simples de uma API. Realize um novo commit com os arquivos e de *push*.
+
+**OBS:** Você irá clonar um repositório vazio, o que faz com que o git do seu computador defina a branch default. Dependendo das configurações do seu git, ele pode criar essa branch com o nome `master` ao invés de `main`! Como a nossa *pipeline* está configurada para ser executada com *commits* na `main`, caso isso ocorra na sua máquina crie a branch `main` e faça um push dela:
+
+```bash
+git checkout -b main
+git push origin main
+```
+
+Depois de alguns segundos sua pipeline deve estar rodando:
 
 ![](img/CodePipelineSourceStarted.jpg)
 
