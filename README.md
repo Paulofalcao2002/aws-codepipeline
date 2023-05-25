@@ -498,6 +498,7 @@ Dentro do repositório clonado, copie e cole o conteúdo do diretório `StarWars
 
 ```bash
 git checkout -b main
+... Comandos para o commit
 git push origin main
 ```
 
