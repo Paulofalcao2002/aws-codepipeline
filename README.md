@@ -492,7 +492,7 @@ Entre na aba de CodeCommit e clone o repositório criado na sua máquina:
 
 ![](img/CodeCommitClone.jpg)
 
-Dentro do repositório clonado, copie e cole o conteúdo do diretório `StarWarsAPI`. Nele está contido os arquivos **buildspec.yml**, **template.yml** e o código python com uma versão simples de uma API. Realize um novo commit com os arquivos e de *push*.
+Dentro do repositório clonado, copie e cole o conteúdo do diretório `StarWarsAPI`. Nele está contido os arquivos **buildspec.yml**, **template.yml** e o código python com uma versão simples de uma API.
 
 **OBS:** Você irá clonar um repositório vazio, o que faz com que o git do seu computador defina a branch default. Dependendo das configurações do seu git, ele pode criar essa branch com o nome `master` ao invés de `main`! Como a nossa *pipeline* está configurada para ser executada com *commits* na `main`, caso isso ocorra na sua máquina crie a branch `main` e faça um push dela:
 
@@ -501,7 +501,7 @@ git checkout -b main
 git push origin main
 ```
 
-Depois de alguns segundos sua pipeline deve estar rodando:
+Realize um novo commit com os arquivos e de *push*. Depois de alguns segundos sua pipeline deve estar rodando:
 
 ![](img/CodePipelineSourceStarted.jpg)
 
@@ -509,6 +509,10 @@ Hora de pegar um café ☕ e aguardar a *pipeline* rodar por completo. Se estive
 
 
 ![](img/CloudWatchLogs.jpg)
+
+Depois da fase de *build*, não se esqueça de dar o ***manual approval!***
+
+![](img/CodePipelineManualApproval.jpg)
 
 Quando a pipeline estiver completa, todos os estágios estarão verdes:
 
@@ -558,7 +562,15 @@ Insira o valor dessas variáveis respectivas ao seu usuário AWS e selecione o e
 
 ****
 ## Apagando a infraestrutura
-Por utilizar o CloudFormation, antes de utilizar o `terraform destroy` **É NECESSÁRIO APAGAR O CLOUDFORMATION STACK NO CONSOLE AWS!!!** Se o `terraform destroy` for realizado antes, a role que criou a stack do CLoudFormation será apagada e por isso não será possível apagar o stack. Além disso, antes de realizar o `terraform destroy` é necessário esvaziar os S3 buckets que foram criados pelo projeto. 
+Por utilizar o CloudFormation, antes de utilizar o `terraform destroy` **É NECESSÁRIO APAGAR O CLOUDFORMATION STACK NO CONSOLE AWS!!!** Se o `terraform destroy` for realizado antes, a role que criou a stack do CLoudFormation será apagada e por isso não será possível apagar o stack. Para vá para o dashboard do CloudFormation, selecione a stack criada pela pipeline e depois clique em delete. 
+
+![](img/CloudFormation.jpg)
+
+Além disso, antes de realizar o `terraform destroy` é necessário esvaziar os S3 buckets que foram criados pelo projeto. Para isso vá no dashboard do S3, selecione o bucket e clique em empty. 
+
+![](img/S3Bucket.jpg)
+
+Agora sim, basta dar um `terraform destroy` e a pipeline estará fora do ar. 
 
 ## Recapitulando
 Ao final desse projeto temos uma CodePipeline completa, utilizando diversos serviços diferentes da AWS para entregar uma API *serverless*.
