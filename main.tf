@@ -11,8 +11,6 @@ terraform {
 # AWS provider configured using AWS CLI credentials files
 provider "aws" {
     region = "us-east-1"
-    shared_config_files = ["C:/Users/paulo/.aws/config"]
-    shared_credentials_files = ["C:/Users/paulo/.aws/credentials"]
 }
 
 # Build a CodeCommit git repo for our Star Wars API
