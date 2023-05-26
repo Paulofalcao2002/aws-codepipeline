@@ -486,7 +486,7 @@ Para realizar o teste será necessário criar um usuário na AWS com permissões
 ### Subindo a infraestrutura
 Todo o trabalho de criar uma **IaC** será recompensado agora, já que com os arquivos **terraform** é necessário simplesmente rodar `terraform init` e `terraform apply` e a *pipeline* estará no ar!
 
-## **OBS:** Como cada s3 bucket deve ter um nome único, isso pode ser um problema caso os nomes dos buckets já estejam sendo utilizados. Caso ocorra algum problema na hora de subir o bucket, como um aviso de erro ou uma demora muito grande para ser criado, **mude o nome do bucket** no `main.tf`!
+## **OBS:** Como cada s3 bucket deve ter um nome único, isso pode ser um problema caso os nomes dos buckets já estejam sendo utilizados. Caso ocorra algum problema na hora de subir o bucket, como um aviso de erro ou uma demora muito grande para ser criado, **mude o nome do bucket** no `main.tf` (Provavelmente deverá ser feito)!
 
 ![](img/PipelineCreated.jpg)
 
