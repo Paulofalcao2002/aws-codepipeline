@@ -34,7 +34,7 @@ module "iam" {
 module "codebuild" {
   source                                 = "./modules/codebuild"
   codebuild_project_name                 = "StarWarsAPICodeBuildProject"
-  s3_logging_bucket_name                 = "paulo-codebuild-star-wars-api-logging-bucket"
+  s3_logging_bucket_name                 = "phmf-codebuild-star-wars-api-logging-bucket"
   codebuild_iam_role_arn                 = module.iam.codebuild_iam_role_arn  
   codecommit_repo_arn                    = module.codecommit.codecommit_repo_arn
   codepipeline_artifact_bucket_name      = module.codepipeline.codepipeline_artifact_bucket_name
@@ -45,7 +45,7 @@ module "codebuild" {
 module "codepipeline" {
   source                                 = "./modules/codepipeline"
   codepipeline_name                      = "StarWarsAPICodePipeline"
-  codepipeline_artifact_bucket_name      = "paulo-codepipeline-star-wars-api-artifact-bucket-name"
+  codepipeline_artifact_bucket_name      = "phmf-codepipeline-star-wars-api-artifact-bucket-name"
   codecommit_repo_name                   = module.codecommit.codecommit_repo_name
   codebuild_project_name                 = module.codebuild.codebuild_project_name
   codepipeline_role_arn                  = module.iam.codepipeline_iam_role_arn
