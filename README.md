@@ -423,6 +423,16 @@ O que mais deu dor de cabeça durante o projeto foi fazer o gerenciamento das pe
 Por fim, o arquivo `main.tf` irá conectar tudo que foi feito nos módulos para fazer com que a *pipeline* funcione:
 
 ```tf
+# Configuring terraform
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
 # AWS provider configured using AWS CLI credentials files
 provider "aws" {
     region = "us-east-1"
@@ -449,7 +459,7 @@ module "iam" {
 module "codebuild" {
   source                                 = "./modules/codebuild"
   codebuild_project_name                 = "StarWarsAPICodeBuildProject"
-  s3_logging_bucket_name                 = "paulo-codebuild-star-wars-api-logging-bucket"
+  s3_logging_bucket_name                 = "phmf-codebuild-star-wars-api-logging-bucket"
   codebuild_iam_role_arn                 = module.iam.codebuild_iam_role_arn  
   codecommit_repo_arn                    = module.codecommit.codecommit_repo_arn
   codepipeline_artifact_bucket_name      = module.codepipeline.codepipeline_artifact_bucket_name
@@ -460,7 +470,7 @@ module "codebuild" {
 module "codepipeline" {
   source                                 = "./modules/codepipeline"
   codepipeline_name                      = "StarWarsAPICodePipeline"
-  codepipeline_artifact_bucket_name      = "paulo-codepipeline-star-wars-api-artifact-bucket-name"
+  codepipeline_artifact_bucket_name      = "phmf-codepipeline-star-wars-api-artifact-bucket-name"
   codecommit_repo_name                   = module.codecommit.codecommit_repo_name
   codebuild_project_name                 = module.codebuild.codebuild_project_name
   codepipeline_role_arn                  = module.iam.codepipeline_iam_role_arn
@@ -476,7 +486,7 @@ Para realizar o teste será necessário criar um usuário na AWS com permissões
 ### Subindo a infraestrutura
 Todo o trabalho de criar uma **IaC** será recompensado agora, já que com os arquivos **terraform** é necessário simplesmente rodar `terraform init` e `terraform apply` e a *pipeline* estará no ar!
 
-**OBS:** Como cada s3 bucket deve ter um nome único, isso pode ser um problema caso os nomes dos buckets já estejam sendo utilizados. Caso isso ocorra, basta mudar o nome no `main.tf`.
+## **OBS:** Como cada s3 bucket deve ter um nome único, isso pode ser um problema caso os nomes dos buckets já estejam sendo utilizados. Caso ocorra algum problema na hora de subir o bucket, como um aviso de erro ou uma demora muito grande para ser criado, **mude o nome do bucket** no `main.tf`!
 
 ![](img/PipelineCreated.jpg)
 
