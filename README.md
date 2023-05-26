@@ -6,7 +6,7 @@ O diagrama a seguir demonstra o fluxo e as tecnologias da AWS utilizadas para cr
 
 ![](img/PipelineDiagram.drawio.png)
 
-A ideia de criar uma *pipeline* é facilitar a vida do desenvolvedor, limitando sua preocupação apenas em realizar mudanças no código e deixar com que infraestrutura realize a integração e *deploy* da novo código automaticamente.
+A ideia de criar uma *pipeline* é facilitar a vida do desenvolvedor, limitando sua preocupação apenas em realizar mudanças no código e deixar com que infraestrutura realize a integração e *deploy* do novo código automaticamente.
 
 No caso da *pipeline* proposta, o desenvolvedor deverá "*commitar*" o código da aplicação juntamente com dois arquivos: o **buildspec** e o **SAM template**, que serão utilizados posteriormente pela *pipeline*. O código será subido para um repositório **CodeCommit**, o serviço de hospedagem de repositório de controle de versão oferecido pela AWS. Sempre que o código for "*commitado*" para o repositório irá realizar um *trigger* no **CodePipeline**, iniciando o seu serviço. Esse estágio da *pipeline* é chamado de ***source***.  
 
@@ -352,7 +352,7 @@ RetrieveCharactersLambda:
           - ':role/CodePipelineIamRole'
 ```
 
-A única dificuldade existente foi pensar numa maneira de passar as informações da conta AWS em que o Lambda será criado de maneira automática, isso foi feito utilizado um *parameter* chamado ***AccountId***.
+A única dificuldade existente foi pensar numa maneira de passar as informações da conta AWS em que o Lambda será criado de maneira automática. Isso foi feito utilizado um *parameter* chamado ***AccountId***.
 
 O evento que irá chamar a função é o **API Gateway**, o serviço AWS que permite criar, publicar, proteger e gerenciar APIs de maneira fácil e escalável. Ele está definido nos blocos posteriores ao *RetrieveCharactersLambda*. 
 
@@ -563,7 +563,7 @@ Insira o valor dessas variáveis respectivas ao seu usuário AWS e selecione o e
 
 ****
 ## Apagando a infraestrutura
-Por utilizar o CloudFormation, antes de utilizar o `terraform destroy` **É NECESSÁRIO APAGAR O CLOUDFORMATION STACK NO CONSOLE AWS!!!** Se o `terraform destroy` for realizado antes, a role que criou a stack do CLoudFormation será apagada e por isso não será possível apagar o stack. Para vá para o dashboard do CloudFormation, selecione a stack criada pela pipeline e depois clique em delete. 
+Por utilizar o CloudFormation, antes de utilizar o `terraform destroy` **É NECESSÁRIO APAGAR O CLOUDFORMATION STACK NO CONSOLE AWS!!!** Se o `terraform destroy` for realizado antes, a role que criou a stack do CLoudFormation será apagada e por isso não será possível apagar o stack. Para isso vá para o dashboard do CloudFormation, selecione a stack criada pela pipeline e depois clique em delete. 
 
 ![](img/CloudFormation.jpg)
 
