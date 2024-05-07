@@ -2,8 +2,6 @@
 ## Descrição do projeto
 O objetivo desse projeto é construir uma *pipeline* para realizar o *deploy* automático de aplicações ***serverless***, utilizando módulos da **AWS** e **terraform**. Para ilustrar a utilização dessa *pipeline*, vamos utilizá-la para fazer a **integração e *deploy* contínuos** de uma **API de Star Wars**!
 
-[Vídeo de demonstração do projeto](https://www.youtube.com/watch?v=yCTmQmfhOc4)
-
 O diagrama a seguir demonstra o fluxo e as tecnologias da AWS utilizadas para criar a *pipeline*: 
 
 ![](img/PipelineDiagram.drawio.png)
